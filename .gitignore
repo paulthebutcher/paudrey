@@ -1,0 +1,21 @@
+.netlify/
+dist/
+node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Local planning, guest records, original media, and review artifacts
+/AGENTS.md
+/Content/
+/Design/
+/data/
+/images.json
+/tools/
+/.agents/
+/.codex/
+/site/README.md
+/site/previews/
+/site/assets/image-assets.json
+/site/assets/fonts/font-assets.json

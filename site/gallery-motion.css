@@ -1,0 +1,14 @@
+/* The temporary image stays in the native dialog's top layer. */
+.lightbox.gallery-motion::backdrop{background:transparent}
+.lightbox-transition-image{position:fixed;top:0;left:0;z-index:2;margin:0;max-width:none;max-height:none;object-fit:fill;transform-origin:0 0;pointer-events:none;will-change:transform,clip-path}
+.lightbox.is-morphing #lightbox-image{opacity:0!important;transition:none}
+.lightbox-top,.lightbox-controls,.lightbox-figure figcaption{position:relative;z-index:3}
+.lightbox.gallery-motion #lightbox-image{transition:none}
+@media(max-width:700px){
+  #favorites-rail.has-drift .gallery-item .gallery-photo img{transform:translate3d(var(--gallery-drift,0px),0,0) scale(1.06);transition:none;will-change:transform}
+}
+@media(prefers-reduced-motion:reduce){
+  #favorites-rail .gallery-photo img{transform:none!important;transition:none!important;will-change:auto}
+  .lightbox-transition-image{display:none}
+}
+.no-motion #favorites-rail .gallery-photo img{transform:none!important;transition:none!important;will-change:auto}

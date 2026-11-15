@@ -1,0 +1,20 @@
+/* Composition-level choreography; the static layout remains the accessible baseline. */
+.hero{background:var(--bark)}
+.hero-image-wrap,.hero-wash{transform-origin:50% 65%}
+.date-digits{display:flex;overflow:hidden;padding:0 .03em .08em 0;margin-bottom:-.08em}
+.date-digits>span{display:block}
+.scroll-choreography .diptych{z-index:4;pointer-events:none}
+.scroll-choreography .joined-scene{z-index:1}
+.story-primary,.story-detail{transform-origin:center center}
+@media(max-width:700px){
+  body.mobile-choreography .convergence-stage .diptych{position:absolute;inset:0;display:block;padding:0;z-index:4;overflow:visible;pointer-events:none}
+  body.mobile-choreography .convergence-stage .path-photo{position:absolute;width:calc((100% - var(--gutter) * 2) / 2);margin:0;transform:none}
+  body.mobile-choreography .convergence-stage .path-paul{left:var(--gutter)}
+  body.mobile-choreography .convergence-stage .path-audrey{left:50%}
+  body.mobile-choreography .convergence-stage .joined-scene{padding-top:30px;min-height:0}
+  body.mobile-choreography .shared-photo figcaption{min-height:13px}
+  body.mobile-choreography .convergence-stage{overflow:clip}
+}
+@media(prefers-reduced-motion:reduce){.hero-image-wrap,.hero-wash{clip-path:none!important;transform:none!important}}
+@media(max-width:700px){body.mobile-choreography .convergence-stage .joined-scene{padding-bottom:35px}}
+@media(max-width:700px){body.mobile-choreography .shared-mask{aspect-ratio:7/8}}

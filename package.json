@@ -1,0 +1,12 @@
+{
+  "name": "paul-audrey-wedding",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test site/tests/*.test.cjs tests/*.test.mjs",
+    "preview": "node scripts/preview.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

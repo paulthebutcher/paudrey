@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Paul & Audrey — Desktop and mobile previews</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#e5e2dc;color:#30261f;font:12px Arial,sans-serif}header{min-height:64px;display:flex;align-items:center;gap:24px;padding:12px 24px;border-bottom:1px solid #b7b1a7;flex-wrap:wrap}header>span{margin-right:auto}nav{display:flex;gap:6px}button{font:inherit;color:inherit;border:1px solid transparent;padding:10px 13px;background:none;cursor:pointer}button[aria-pressed=true]{border-color:#30261f}button:focus-visible{outline:2px solid #30261f;outline-offset:3px}.surface{padding:24px;display:flex;justify-content:center}.frame-space{position:relative;flex:none}iframe{border:0;display:block;transform-origin:top left;background:#30261f}label{display:flex;align-items:center;gap:8px;min-height:40px}.hint{margin:0 24px 20px;text-align:center;color:#5b554b;font-size:11px}a{color:inherit}
+  </style>
+</head>
+<body>
+  <header><span>Paul & Audrey | Save the date</span><nav aria-label="Preview size"><button id="desktop" aria-pressed="true">Desktop · 1440</button><button id="mobile" aria-pressed="false">Mobile · 390</button><button id="small" aria-pressed="false">Small · 320</button><button id="tablet" aria-pressed="false">Tablet · 768</button></nav><label><input id="reduced" type="checkbox">Reduced motion</label><button id="replay">Replay opening</button></header>
+  <div class="surface"><div class="frame-space"><iframe title="Wedding website preview" src="index.html" width="1440" height="900"></iframe></div></div>
+  <p class="hint">Scroll inside the preview. Swipe the gallery, or tap a photo to open it.</p>
+  <script>
+    const params=new URLSearchParams(location.search);let size=['desktop','small','tablet'].includes(params.get('size'))?params.get('size'):'mobile';
+    const frame=document.querySelector('iframe'),space=document.querySelector('.frame-space'),reduce=document.getElementById('reduced');
+    reduce.checked=params.get('motion')==='reduce';
+    function fit(){const width={mobile:390,small:320,tablet:768,desktop:1440}[size],height={mobile:844,small:720,tablet:1024,desktop:900}[size],scale=Math.max(.25,Math.min(1,(document.documentElement.clientWidth-48)/width,(innerHeight-document.querySelector('header').offsetHeight-70)/height));frame.width=width;frame.height=height;frame.style.width=width+'px';frame.style.height=height+'px';frame.style.transform='scale('+scale+')';space.style.width=width*scale+'px';space.style.height=height*scale+'px';}
+    function update(){document.getElementById('desktop').setAttribute('aria-pressed',size==='desktop');document.getElementById('mobile').setAttribute('aria-pressed',size==='mobile');document.getElementById('small').setAttribute('aria-pressed',size==='small');document.getElementById('tablet').setAttribute('aria-pressed',size==='tablet');fit();frame.src='index.html?review='+Date.now()+(reduce.checked?'&motion=reduce':'')+(params.get('invite')?'&invite='+encodeURIComponent(params.get('invite')):'');history.replaceState(null,'','?size='+size+(reduce.checked?'&motion=reduce':''));}
+    document.getElementById('desktop').onclick=()=>{size='desktop';update();};document.getElementById('mobile').onclick=()=>{size='mobile';update();};document.getElementById('small').onclick=()=>{size='small';update();};document.getElementById('tablet').onclick=()=>{size='tablet';update();};document.getElementById('replay').onclick=update;reduce.onchange=update;window.addEventListener('resize',fit);update();
+  </script>
+</body>
+</html>
