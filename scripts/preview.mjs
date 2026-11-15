@@ -4,6 +4,7 @@ import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { createHandler } from '../netlify/functions/invitation.mjs';
+import { renderMetadata, robotsText } from './metadata.mjs';
 const root = fileURLToPath(new URL('../site/', import.meta.url));
 const port = Number(process.env.PORT || 8768);
 let handler = createHandler();
@@ -22,7 +23,7 @@ if (process.argv.includes('--fixture')) {
     }}]:[]});
   }});
 }
-const types = {'.html':'text/html','.js':'text/javascript','.css':'text/css','.webp':'image/webp','.woff2':'font/woff2','.json':'application/json'};
+const types = {'.html':'text/html','.js':'text/javascript','.css':'text/css','.webp':'image/webp','.jpg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml','.woff2':'font/woff2','.json':'application/json'};
 http.createServer(async (req,res)=>{
   try {
     const url = new URL(req.url,`http://127.0.0.1:${port}`);
@@ -33,9 +34,15 @@ http.createServer(async (req,res)=>{
       res.writeHead(response.status,Object.fromEntries(response.headers));res.end(await response.text());return;
     }
     if (!['GET','HEAD'].includes(req.method)) {res.writeHead(405);res.end();return;}
+    const metadata = {origin:`http://127.0.0.1:${port}`,indexable:false};
+    if (url.pathname === '/robots.txt') {
+      res.writeHead(200,{'Content-Type':'text/plain','X-Robots-Tag':'noindex, nofollow'});
+      res.end(req.method==='HEAD'?undefined:robotsText(metadata));return;
+    }
     const path = resolve(root,'.'+decodeURIComponent(url.pathname === '/'?'/index.html':url.pathname));
     if(!path.startsWith(resolve(root)+sep) || !(await stat(path)).isFile()) {res.writeHead(404);res.end();return;}
-    res.writeHead(200,{'Content-Type':types[extname(path)]||'application/octet-stream','Cache-Control':'no-store','Referrer-Policy':'no-referrer'});
-    res.end(req.method==='HEAD'?undefined:await readFile(path));
+    res.writeHead(200,{'Content-Type':types[extname(path)]||'application/octet-stream','Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Robots-Tag':'noindex, nofollow'});
+    const body = req.method==='HEAD' ? undefined : await readFile(path);
+    res.end(body && path === resolve(root,'index.html') ? renderMetadata(body.toString(),metadata) : body);
   } catch {res.writeHead(404);res.end('Not found');}
 }).listen(port,'127.0.0.1',()=>console.log(`Local preview: http://127.0.0.1:${port}/review.html?size=mobile${process.argv.includes('--fixture')?' (isolated response fixture)':''}`));

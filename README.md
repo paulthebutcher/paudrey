@@ -29,7 +29,23 @@ The build writes `dist/` using an explicit public-file allowlist. Review control
 - Publish directory: `dist`
 - Functions: `netlify/functions`
 
-Publishing and live response activation are separate from pushing this repository. The preview currently includes `noindex, nofollow` headers and metadata.
+Publishing and live response activation are separate from pushing this repository.
+
+## Search and sharing previews
+
+The build emits the title, description, canonical URL, Open Graph and Twitter large-image tags, and WebPage JSON-LD directly into the HTML. The sharing artwork is a 1200 × 630 JPEG at `assets/images/save-the-date.jpg`; its editable layout is `site/social-card.html`, excluded from deployment. The browser icon is `site/favicon.svg`.
+
+Production builds enable indexing and generate `robots.txt` and a one-page `sitemap.xml`. Canonical, social, and sitemap URLs always point to the root page, without household tokens or other query parameters. Household greetings and response state never enter metadata.
+
+On Netlify, the build uses its automatic `URL` variable for the public origin. Set build-scoped `SITE_URL` to override it with a custom domain. Deploy previews and branch deploys use their own `DEPLOY_PRIME_URL` and remain `noindex`; they do not publish a sitemap. Local builds also remain `noindex` without a public origin. `dist/_headers` sets the matching robots response header, so there is no conflicting global noindex rule.
+
+For a production build outside Netlify, export the actual public HTTPS origin:
+
+```sh
+SITE_URL=https://your-wedding-domain.example npm run build
+```
+
+After publishing, verify the public page and image are reachable without sign-in, and paste a test link into Messages to check the live preview. Localhost cannot be fetched by remote preview services. See [Apple's Messages preview guidance](https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages), the [Open Graph specification](https://ogp.me/), and [Netlify's build variables](https://docs.netlify.com/build/configure-builds/environment-variables/).
 
 ## Notion acknowledgment
 
