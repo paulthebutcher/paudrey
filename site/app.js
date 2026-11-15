@@ -67,10 +67,11 @@
     ]).then(() => {
       if (openingFinished) return;
       opening = gsap.timeline({onComplete:finishOpening});
-      opening.to(openingVeil,{opacity:0,duration:1.05},0)
-        .to(heroImage,{scale:1,duration:1.25},0)
-        .to(openingNames,{opacity:1,y:0,duration:.9,stagger:.08},.12)
-        .to(openingDetails,{opacity:1,y:0,duration:.7},.4);
+      opening.to('.opening-mark',{opacity:0,y:-6,duration:.35},.4)
+        .to(openingVeil,{opacity:0,duration:.8},.55)
+        .to(heroImage,{scale:1,duration:1.15},.55)
+        .to(openingNames,{opacity:1,y:0,duration:.85,stagger:.08},.75)
+        .to(openingDetails,{opacity:1,y:0,duration:.65},.95);
     });
   } else finishOpening();
 
@@ -112,13 +113,12 @@
     document.body.classList.toggle('mobile-choreography',!desktop && !reduce);
 
     if (!reduce) {
-      // Pull the opening scene back onto paper. Its containing frame moves
-      // independently of the entrance's image scale, so both gestures remain continuous.
+      // Keep the photo behind the full text width throughout the exit.
+      // Only the photo drifts; a shrinking mask exposed cream text on cream paper.
       const hero = root.querySelector('.hero');
-      gsap.fromTo([root.querySelector('.hero-image-wrap'),root.querySelector('.hero-wash')],
-        {y:0,scale:1,clipPath:'inset(0% 0% 0% 0%)'},
-        {y:() => hero.clientHeight * .16,scale:desktop ? .88 : .91,
-          clipPath:'inset(0% 3% 10% 3%)',ease:'none',
+      gsap.fromTo(root.querySelector('.hero-image-wrap'),
+        {y:0},
+        {y:() => hero.clientHeight * .08,ease:'none',
           scrollTrigger:{trigger:hero,start:'top top',end:'bottom top',scrub:.45,invalidateOnRefresh:true}});
 
       // Short, one-time reveals finish even if the visitor stops scrolling.

@@ -70,7 +70,16 @@
 .name-paul,.name-amp{justify-self:start;width:max-content}
 @media(max-width:700px){.date-digits{padding-bottom:.06em}.date-year{margin-top:0}}
 
-/* Decorative loading reveal; never blocks scrolling, clicks, or keyboard focus. */
-.opening-veil{position:absolute;inset:0;z-index:3;background:var(--brown);pointer-events:none}
+/* Portrait crop keeps both faces below the desktop name line. */
+@media(min-width:701px){.hero-image{object-position:50% 40%;transform-origin:50% 40%}}
+
+/* A brief monogram and drawing rule, followed by the photo and names. */
+.opening-veil{position:absolute;inset:0;z-index:3;background:var(--brown);color:var(--bark);pointer-events:none;display:grid;place-items:center}
 .opening-veil[hidden]{display:none}
+.opening-mark{display:grid;justify-items:center;gap:24px;animation:opening-mark-in .35s var(--reveal-ease) backwards}
+.opening-monogram{font:clamp(54px,8vw,90px)/1.2 var(--serif);letter-spacing:-.03em}
+.opening-monogram>span{font-size:.55em;color:var(--grass)}
+.opening-rule{height:1px;width:80px;background:var(--grass);transform-origin:left;animation:opening-rule-in .8s var(--reveal-ease) both}
+@keyframes opening-mark-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes opening-rule-in{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 @media(prefers-reduced-motion:reduce){.opening-veil{display:none}}

@@ -2,7 +2,7 @@
 
 A responsive wedding save-the-date for September 25, 2027, in Salt Lake City. Built with vanilla HTML, CSS, JavaScript, self-hosted fonts, GSAP, and Lenis.
 
-The site opens automatically with a brief photo and typography reveal. It includes a short story, scroll-linked photo transitions, a calendar download, a nine-photo gallery, and a household save-the-date acknowledgment. Reduced-motion preferences are respected.
+The site opens automatically with a brief monogram, drawing rule, and photo reveal. The same portrait anchors desktop and mobile, and stays full-width beneath the text while scrolling. It includes a short story, scroll-linked photo transitions, a calendar download, a nine-photo gallery, and a household save-the-date acknowledgment. Reduced-motion preferences are respected.
 
 ## Local development
 
